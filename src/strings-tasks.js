@@ -535,8 +535,43 @@ function extractEmails(str) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const shiftDelta = 13;
+  const numberOfLetters = 26;
+  const upperCaseStart = 'A'.charCodeAt(0);
+  const lowerCaseStart = 'a'.charCodeAt(0);
+  const shiftLetter = (
+    inCodeOriginal,
+    inCodeStart,
+    inShiftDelta,
+    inNumberOfLetters
+  ) => {
+    const indexInLettersOriginal = inCodeOriginal - inCodeStart;
+    const indexInLettersShifted =
+      (indexInLettersOriginal + inShiftDelta) % inNumberOfLetters;
+    const codeShifted = indexInLettersShifted + inCodeStart;
+    return codeShifted;
+  };
+
+  const arrayCharsInString = str.split('');
+  const arrayCharsRot13 = arrayCharsInString.map((char) => {
+    if (!char.match(/[a-zA-Z]/g)) {
+      return char;
+    }
+    const charCodeOriginal = char.charCodeAt(0);
+    const charCodeStart =
+      charCodeOriginal >= lowerCaseStart ? lowerCaseStart : upperCaseStart;
+    const charCodeShifted = shiftLetter(
+      charCodeOriginal,
+      charCodeStart,
+      shiftDelta,
+      numberOfLetters
+    );
+    const charShifted = String.fromCharCode(charCodeShifted);
+    return charShifted;
+  });
+  const stringRot13 = arrayCharsRot13.join('');
+  return stringRot13;
 }
 
 /**
